@@ -226,7 +226,11 @@ public:
       return *this;
     }
     resize(other.size());
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic ignored "-Wstringop-overread"
     std::copy(&other[0], &other[size_], data_);
+#pragma GCC diagnostic pop
     return *this;
   }
   void resize(uint32_t new_size, uint32_t new_cap = 0)
@@ -245,7 +249,11 @@ public:
       data_ = new T[cap_];
       if (old_data != NULL) {
         srsran_assert(cap_ > size_, "Old size larger than new capacity in dyn_array\n");
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
         std::copy(&old_data[0], &old_data[size_], data_);
+#pragma GCC diagnostic pop
       }
     } else {
       data_ = NULL;
